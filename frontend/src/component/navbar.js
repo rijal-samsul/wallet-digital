@@ -2,10 +2,18 @@ import React, { useContext } from 'react'
 import toggle from '../assets/justify.svg'
 import { Link } from 'react-router-dom'
 
-export default function Navbar({ title }) {
+import React, { useState } from 'react'
+import toggle from '../assets/justify.svg'
+import Register from '../modal/Register';
 
-    // // Check the login state or not
-    // const [state] = useContext()
+export default function Navbar() {
+    const [regShow, setRegShow] = useState(false);
+    const handleRegClose = () => setRegShow(false);
+    const handleRegShow = () => setRegShow(true);
+
+    const handleRegister = () => {
+        handleRegShow();
+    };
 
     return (
         <nav>
@@ -28,6 +36,10 @@ export default function Navbar({ title }) {
                     </> */}
                 {/* )} */}    
             </ul>
+            <Register
+                show={regShow}
+                handleClose={handleRegClose}
+            />
         </nav>
     )
 }

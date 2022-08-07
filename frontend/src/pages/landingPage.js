@@ -1,11 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Navbar from '../component/navbar'
 import { Col, Container, Row } from 'react-bootstrap'
 
 import icon from '../assets/icon.png'
 
 export default function LandingPage() {
+    const [logShow, setLogShow] = useState(false);
+    const handleLogClose = () => setLogShow(false);
+    const handleLogShow = () => setLogShow(true);
 
+    const handleLogin = () => {
+        handleLogShow();
+    };
     return (
         <>
             <Navbar />
