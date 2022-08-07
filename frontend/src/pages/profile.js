@@ -1,13 +1,17 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import Navbar from '../component/navbar'
 
 import user from '../assets/user.png'
+import Transfers from '../modal/Transfer'
 
 export default function Profile() {
 
     const title = 'Profile'
     document.title = 'Wallet Digital | ' + title
+
+    const [transfer, setTransfer] = useState(false)
+    const closeTrans = () => setTransfer(false)
 
   return (
     <>
@@ -29,12 +33,16 @@ export default function Profile() {
                         </div>
                         <div className='d-flex my-4 justify-content-center align-items-center'>
                             <button className='auth mx-3 px-5'>Topup</button>
-                            <button className='auth mx-3 px-5'>Transfer</button>
+                            <button className='auth mx-3 px-5' onClick={() => setTransfer(true)}>Transfer</button>
                         </div>
                     </div>
                     
                 </Col>
             </Row>
+            <Transfers
+                transfer={transfer}
+                closeTrans={closeTrans}
+            />
         </Container>
     </>
   )
