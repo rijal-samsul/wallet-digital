@@ -19,7 +19,7 @@ export default function Login({show, handleClose}){
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
                 {message && message}
-                <h2 style={{color:"yellow", textAlign:"center"}}>Login</h2>
+                <h2 style={{ textAlign:"center"}}>Login</h2>
                 <Form>
                     <div className="mt-3 form">
                         <div>Email</div>
@@ -38,7 +38,7 @@ export default function Login({show, handleClose}){
 
                     </div>
                     <div className="d-grid gap-2 mt-5">
-                        <Button type="submit" className="btn btn-login" style={{ width: '100%' }} variant="warning">
+                        <Button type="submit" className="btn btn-login" style={{ width: '100%', color: "white" }} variant="warning">
                         Login
                         </Button>
                     </div>

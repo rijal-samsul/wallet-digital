@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
 import toggle from '../assets/justify.svg'
@@ -14,7 +14,7 @@ export default function Navbar({title}) {
         handleRegShow();
     };
 
-export default function Navbar() {
+
     // let navigate = useNavigate();
     // function gotoAbout(){
     //     navigate("/about")

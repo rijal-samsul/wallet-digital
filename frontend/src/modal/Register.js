@@ -16,9 +16,9 @@ export default function Register({show, handleClose}){
     return(
         <Modal show={show} onHide={handleClose} centered >
             <Modal.Header closeButton></Modal.Header>
-            <Modal.Body>
+            <Modal.Body >
                 {message && message}
-                <h2 style={{color:"yellow", textAlign:"center"}}>Register</h2>
+                <h2 style={{ textAlign:"center"}}>Register</h2>
                 <Form>
                     <div>
                         <div>Full name</div>
@@ -46,7 +46,7 @@ export default function Register({show, handleClose}){
                         />
                     </div>
                     <div className="d-grid gap-2 mt-5">
-                        <Button type="submit" className="btn btn-login" style={{ width: '100%' }} variant="warning">
+                        <Button type="submit" className="btn btn-login" style={{ width: '100%', color: "white" }} variant="warning">
                         Register
                         </Button>
                     </div>
