@@ -1,5 +1,6 @@
+import React from 'react'
+import { useNavigate } from "react-router-dom"
 
-import React, { useState } from 'react'
 import toggle from '../assets/justify.svg'
 import Register from '../modal/Register';
 import { Link } from 'react-router-dom'
@@ -13,6 +14,11 @@ export default function Navbar({title}) {
         handleRegShow();
     };
 
+export default function Navbar() {
+    // let navigate = useNavigate();
+    // function gotoAbout(){
+    //     navigate("/about")
+    // }
     return (
         <nav>
             <input type='checkbox' id="check" />
@@ -23,7 +29,7 @@ export default function Navbar({title}) {
                 {/* {!state ? (
                     <> */}
                         <li><Link to='/' className='text-navbar'>Home</Link></li>
-                        <li><Link to='#' className={title === 'About' ? `text-navbar-active` : `text-navbar`}>About</Link></li>
+                        <li><Link to='/about' className={title === 'About' ? `text-navbar-active` : `text-navbar`}>About</Link></li>
                         <li><Link to='#' className='auth text-navbar' onClick={handleRegister}>Register</Link></li>
                     
                     {/* </>
