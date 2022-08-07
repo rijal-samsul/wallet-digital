@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
 import Navbar from '../component/navbar'
+import Login from '../modal/Login'
 import { Col, Container, Row } from 'react-bootstrap'
 
 import icon from '../assets/icon.png'
@@ -29,7 +30,7 @@ export default function LandingPage() {
                             </p>
                         </div>
                         <div>
-                            <button className='auth px-5 mt-2'>Login</button>
+                            <button className='auth px-5 mt-2' onClick={handleLogin} >Login</button>
                         </div>
                     </div>
                     </Col>
@@ -42,6 +43,10 @@ export default function LandingPage() {
                         </div>
                     </Col>
                 </Row>
+                <Login
+                show={logShow}
+                handleClose={handleLogClose}
+                />
             </Container>
         </>
     )
