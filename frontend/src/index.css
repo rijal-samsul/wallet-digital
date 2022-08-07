@@ -40,7 +40,7 @@ nav {
 nav ul {
   float: right;
   margin-right: 20px;
-  font-weight: 600;
+  font-weight: 500;
 }
 
 nav ul li {
@@ -49,19 +49,42 @@ nav ul li {
   margin: 0 5px;
 }
 
-nav ul li a {
+.text-navbar {
   color: black !important;
-  font-size: 17px;
-  padding: 7px 13px;
-  border-radius: 3px;
-  text-transform: uppercase;
-  text-decoration: none !important;
+  font-size: 18px;
+  padding: 7px 20px;
+  border-radius: 5px;
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.text-navbar-active {
+  color: black !important;
+  font-size: 20px;
+  padding: 7px 20px;
+  border-radius: 5px;
+  font-weight: 700;
+  text-decoration: none;
 }
 
 .auth {
   background: #F7A915 !important;
-  color: white !important;
-  text-decoration: none;
+  color: #ffffff !important;
+  font-size: 20px;
+  padding: 7px 25px;
+  border: none !important;
+  border-radius: 5px;
+}
+
+.logout {
+  background: #F74B15 !important;
+  color: #ffffff !important;
+  font-size: 20px;
+  padding: 7px 25px;
+}
+
+.logout:hover, .auth:hover {
+  border-bottom: none;
 }
 
 a:hover {
@@ -108,14 +131,25 @@ a:hover {
   width: 100%;
 }
 
+/* Profile style */
 
+.profile {
+  background: #F6F6F6;
+  border: 1px solid #ADACAC;
+  border-radius: 30px;
+}
+
+.name {
+  margin-top: 120px;
+  font-family: 'Aleo';
+}
 
 @media screen and (max-width: 952px) {
   label.logo {
     font-size: 30px;
     padding-left: 50px;
   }
-  nav ul li a {
+  .text-navbar {
     font-size: 16px;
   }
 }
@@ -139,15 +173,14 @@ a:hover {
     margin: 50px 0;
     line-height: 30px;
   }
-  nav ul li a {
+  .text-navbar {
     font-size: 20px;
   }
-  /* a:hover {
-    background: none;
-    color: #0082e6;
-  } */
   #check:checked ~ ul {
     left: 0;
+  }
+  .profile {
+    z-index: -1;
   }
 }
 
