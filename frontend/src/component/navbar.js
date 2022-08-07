@@ -14,11 +14,6 @@ export default function Navbar({title}) {
         handleRegShow();
     };
 
-
-    // let navigate = useNavigate();
-    // function gotoAbout(){
-    //     navigate("/about")
-    // }
     return (
         <nav>
             <input type='checkbox' id="check" />
