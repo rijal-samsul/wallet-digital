@@ -3,7 +3,7 @@ const express = require("express");
 const router = express.Router();
 
 const { addUSer, getUsers, getUser, updateUser, deleteUser} = require("../controllers/user")
-const { register, login } = require("../controllers/auth")
+const { register, login, checkAuth } = require("../controllers/auth")
 const { getWallet, updateWallet } = require("../controllers/wallet")
 const { auth } = require("../middleware/auth")
 
@@ -18,5 +18,6 @@ router.patch("/wallet", auth, updateWallet)
 
 router.post("/register", register)
 router.post("/login", login)
+router.get("/check-auth", auth, checkAuth)
 
 module.exports = router
