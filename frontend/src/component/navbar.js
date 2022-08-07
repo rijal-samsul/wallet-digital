@@ -20,9 +20,20 @@ export default function Navbar({title}) {
                 <img src={toggle} alt="" />
             </label>
             <ul className=' mx-5'>
-                <li><Link to='/' className='text-navbar'>Home</Link></li>
-                <li><Link to='#' className={title === 'About' ? `text-navbar-active` : `text-navbar`}>About</Link></li>                
-                <li><Link to='#' className='auth text-navbar' onClick={handleRegister}>Register</Link></li>
+                {/* {!state ? (
+                    <> */}
+                        <li><Link to='/' className='text-navbar'>Home</Link></li>
+                        <li><Link to='#' className={title === 'About' ? `text-navbar-active` : `text-navbar`}>About</Link></li>
+                        <li><Link to='#' className='auth text-navbar' onClick={handleRegister}>Register</Link></li>
+                    
+                    {/* </>
+                ) : ( */}
+                    {/* <>
+                        <li><Link to='#' className={title === 'Profile' ? `text-navbar-active` : `text-navbar`}>Profile</Link></li>
+                        <li><Link to='#' className={title === 'Laporan' ? `text-navbar-active` : `text-navbar`}>Laporan</Link></li>
+                        <li><Link to='#' className='logout text-navbar'>Logout</Link></li>
+                    </> */}
+                {/* )} */}    
             </ul>
             <Register
                 show={regShow}
