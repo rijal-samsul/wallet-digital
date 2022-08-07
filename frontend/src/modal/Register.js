@@ -23,26 +23,26 @@ export default function Register({show, handleClose}){
                     <div>
                         <div>Full name</div>
                         <input
-                        style={{ width: '100%', backgroundColor:"#D2D2D2" }}
+                        style={{ width: '100%', backgroundColor:"#F3F3F3", border:"1px solid #D2D2D2"}}
                         type="text"
                         name="email"
-                        className="mb-3 px-2 py-2"
+                        className="mb-3 px-2 py-2 rounded"
                         />
 
                         <div>Email</div>
                         <input
-                        style={{ width: '100%', backgroundColor:"#D2D2D2" }}
+                        style={{ width: '100%', backgroundColor:"#F3F3F3", border:"1px solid #D2D2D2"}}                        
                         type="text"
                         name="email"
-                        className="mb-3 px-2 py-2"
+                        className="mb-3 px-2 py-2 rounded"
                         />
 
                         <div>Password</div>
                         <input
-                        style={{ width: '100%', backgroundColor:"#D2D2D2" }}
-                        type="text"
+                        style={{ width: '100%', backgroundColor:"#F3F3F3", border:"1px solid #D2D2D2"}}                        
+                        type="password"
                         name="email"
-                        className="mb-1 px-2 py-2"
+                        className="mb-1 px-2 py-2 rounded"
                         />
                     </div>
                     <div className="d-grid gap-2 mt-5">
@@ -52,7 +52,7 @@ export default function Register({show, handleClose}){
                     </div>
                 </Form>
                 <p style={{textAlign:"center"}}>Already have an account? klik
-                        <a style={{ fontWeight: 'bold' }} onClick={handleLogin}> here</a>
+                        <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleLogin}> here</span>
                 </p>
             </Modal.Body>
             <Login

@@ -24,16 +24,16 @@ export default function Login({show, handleClose}){
                     <div className="mt-3 form">
                         <div>Email</div>
                         <input
-                        style={{ width: '100%', backgroundColor:"#D2D2D2" }}
+                        style={{ width: '100%', backgroundColor:"#F3F3F3", border:"1px solid #D2D2D2"}}
                         type="text"
-                        className="mb-3 px-2 py-2"
+                        className="mb-3 px-2 py-2 rounded"
                         />
 
                         <div>Password</div>
                         <input
-                        style={{ width: '100%', backgroundColor:"#D2D2D2" }}
-                        type="text"
-                        className="mb-1 px-2 py-2"
+                        style={{ width: '100%', backgroundColor:"#F3F3F3", border:"1px solid #D2D2D2"}}
+                        type="password"
+                        className="mb-1 px-2 py-2 rounded"
                         />
 
                     </div>
@@ -43,7 +43,7 @@ export default function Login({show, handleClose}){
                         </Button>
                     </div>
                 </Form>
-                <p style={{textAlign:"center"}}>Don't have an account? klik <a style={{ fontWeight: 'bold' }} onClick={handleRegister}>here</a></p>
+                <p style={{textAlign:"center"}}>Don't have an account? klik <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleRegister}>here</span></p>
             </Modal.Body>
             <Register
                 show={regShow}
