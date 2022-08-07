@@ -144,6 +144,16 @@ a:hover {
   font-family: 'Aleo';
 }
 
+.modal.show .modal-dialog {
+  width: 430px;
+  font-family: 'Aleo';
+}
+
+.modal-header {
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+}
+
 @media screen and (max-width: 952px) {
   label.logo {
     font-size: 30px;
