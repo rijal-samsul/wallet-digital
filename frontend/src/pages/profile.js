@@ -3,6 +3,7 @@ import { Col, Container, Row } from 'react-bootstrap'
 import Navbar from '../component/navbar'
 
 import user from '../assets/user.png'
+import Topup from '../modal/Topup'
 import Transfers from '../modal/Transfer'
 
 export default function Profile() {
@@ -12,6 +13,11 @@ export default function Profile() {
 
     const [transfer, setTransfer] = useState(false)
     const closeTrans = () => setTransfer(false)
+
+    const [topup, setTopupShow] = useState(false);
+    const handleTopupClose = () => setTopupShow(false);
+    const handleTopupShow = () => setTopupShow(true);
+    
 
   return (
     <>
@@ -32,7 +38,7 @@ export default function Profile() {
                             <div className='h1' style={{color: '#F7A915'}}>Rp. 250.000</div>
                         </div>
                         <div className='d-flex my-4 justify-content-center align-items-center'>
-                            <button className='auth mx-3 px-5'>Topup</button>
+                            <button className='auth mx-3 px-5' onClick={() => setTopupShow(true)}>Topup</button>
                             <button className='auth mx-3 px-5' onClick={() => setTransfer(true)}>Transfer</button>
                         </div>
                     </div>
@@ -42,6 +48,10 @@ export default function Profile() {
             <Transfers
                 transfer={transfer}
                 closeTrans={closeTrans}
+            />
+            <Topup
+                show={topup}
+                handleClose={handleTopupClose}
             />
         </Container>
     </>
