@@ -42,8 +42,8 @@ export default function Navbar({title}) {
                     </>
                 ) : (
                     <>
-                        <li><Link to='#' className={title === 'Profile' ? `text-navbar-active` : `text-navbar`}>Profile</Link></li>
-                        <li><Link to='#' className={title === 'Laporan' ? `text-navbar-active` : `text-navbar`}>Laporan</Link></li>
+                        <li><Link to='/profile' className={title === 'Profile' ? `text-navbar-active` : `text-navbar`}>Profile</Link></li>
+                        <li><Link to='/laporan' className={title === 'Laporan' ? `text-navbar-active` : `text-navbar`}>Laporan</Link></li>
                         <li><a onClick={logout} className='logout text-navbar'>Logout</a></li>
                     </>  
                 )}
