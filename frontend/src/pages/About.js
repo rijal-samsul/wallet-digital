@@ -4,6 +4,10 @@ import { Container, Row, Col } from "react-bootstrap"
 import AboutIcon from "../assets/AboutIcon.png"
 
 export default function About(){
+
+    const title = 'About'
+    document.title = 'Wallet Digital | ' + title
+
     return(
         <>
             <Navbar />

@@ -1,18 +1,28 @@
 import React, { useState } from 'react'
 import Navbar from '../component/navbar'
 import Login from '../modal/Login'
+import Register from '../modal/Register'
 import { Col, Container, Row } from 'react-bootstrap'
 
 import icon from '../assets/icon.png'
 
 export default function LandingPage() {
-    const [logShow, setLogShow] = useState(false);
-    const handleLogClose = () => setLogShow(false);
-    const handleLogShow = () => setLogShow(true);
+
+    const [login, setLogin] = useState(false)
+    const [register, setRegister] = useState(false)
+    const closeLogin = () => setLogin(false)
+    const closeRegister = () => setRegister(false)
 
     const handleLogin = () => {
-        handleLogShow();
-    };
+        setLogin(true)
+        setRegister(false)
+    }
+
+    const handleRegister = () => {
+        setRegister(true)
+        setLogin(false)
+    }
+    
     return (
         <>
             <Navbar />
@@ -44,8 +54,14 @@ export default function LandingPage() {
                     </Col>
                 </Row>
                 <Login
-                show={logShow}
-                handleClose={handleLogClose}
+                    login={login}
+                    closeLogin={closeLogin}
+                    handleRegister={handleRegister}
+                />
+                <Register
+                    register={register}
+                    handleLogin={handleLogin}
+                    closeRegister={closeRegister}
                 />
             </Container>
         </>

@@ -4,14 +4,7 @@ import Login from "./Login"
 import { API } from "../config/api";
 import { useMutation } from 'react-query'
 
-export default function Register({show, handleClose}){
-    const [logShow, setLogShow] = useState(false);
-    const handleLogClose = () => setLogShow(false);
-    const handleLogShow = () => setLogShow(true);
-
-    const handleLogin = () => {
-        handleLogShow();
-    };
+export default function Register({ register, handleLogin,closeRegister }){
 
     const [message, setMessage] = useState(null);
     const [form, setForm] = useState({
@@ -80,11 +73,11 @@ export default function Register({show, handleClose}){
     })    
 
     return(
-        <Modal show={show} onHide={handleClose} centered >
+        <Modal show={register} onHide={closeRegister} centered >
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body >
                 {message && message}
-                <h2 style={{ textAlign:"center"}}>Register</h2>
+                <h2 style={{ textAlign:"center", fontWeight: "bold"}}>Register</h2>
                 <Form onSubmit={(e) => handleSubmit.mutate(e)}>
                     <div>
                         <div>Full name</div>
@@ -127,10 +120,6 @@ export default function Register({show, handleClose}){
                         <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleLogin}> here</span>
                 </p>
             </Modal.Body>
-            <Login
-                show={logShow}
-                handleClose={handleLogClose}
-            />
         </Modal>
     )
 }

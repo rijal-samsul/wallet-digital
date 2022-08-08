@@ -2,18 +2,26 @@ import React, { useContext, useState } from 'react'
 import { useNavigate } from "react-router-dom"
 
 import toggle from '../assets/justify.svg'
-import Register from '../modal/Register';
 import { Link } from 'react-router-dom'
 import { UserContext } from '../context/userContext';
+import Register from '../modal/Register';
+import Login from '../modal/Login';
 
 export default function Navbar({title}) {
-    const [regShow, setRegShow] = useState(false);
-    const handleRegClose = () => setRegShow(false);
-    const handleRegShow = () => setRegShow(true);
 
+    const [register, setRegister] = useState(false)
+    const [login, setLogin] = useState(false)
+    const closeRegister = () => setRegister(false)
+    const closeLogin = () => setLogin(false)
+
+    const handleLogin = () => {
+        setLogin(true)
+        setRegister(false)
+    }
     const handleRegister = () => {
-        handleRegShow();
-    };
+        setRegister(true)
+        setLogin(false)
+    }
 
     const [state, dispatch] = useContext(UserContext)
     const navigate = useNavigate()
@@ -37,7 +45,7 @@ export default function Navbar({title}) {
                     <>
                         <li><Link to='/auth' className='text-navbar'>Home</Link></li>
                         <li><Link to='/about' className={title === 'About' ? `text-navbar-active` : `text-navbar`}>About</Link></li>
-                        <li><a className='auth text-navbar' onClick={handleRegister}>Register</a></li>
+                        <li><a className='auth text-navbar' onClick={() => setRegister(true)}>Register</a></li>
                     
                     </>
                 ) : (
@@ -49,9 +57,15 @@ export default function Navbar({title}) {
                 )}
             </ul>
             <Register
-                show={regShow}
-                handleClose={handleRegClose}
+                register={register}
+                handleLogin={handleLogin}
+                closeRegister={closeRegister}
             />
+            <Login
+                    login={login}
+                    closeLogin={closeLogin}
+                    handleRegister={handleRegister}
+                />
         </nav>
     )
 }

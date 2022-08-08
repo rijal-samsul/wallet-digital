@@ -74,6 +74,7 @@ nav ul li {
   padding: 7px 25px;
   border: none !important;
   border-radius: 5px;
+  cursor: pointer;
 }
 
 .logout {

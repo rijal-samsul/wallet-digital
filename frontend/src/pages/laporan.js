@@ -6,12 +6,15 @@ import { transData } from '../dummy/transfer'
 
 export default function Laporan() {
 
+    const title = 'Laporan'
+    document.title = 'Wallet Digital | ' + title
+
     const [topUp, setTopUp] = useState(topup)
     const [transfer, setTransfer] = useState(transData)
 
   return (
     <>
-        <Navbar />
+        <Navbar title={title} />
          <Container>
             <Row>
                 <Col className='d-flex justify-content-center mt-5 py-3 px-0'>
@@ -22,7 +25,7 @@ export default function Laporan() {
                                 <div className='h3 fw-bold mx-3 mb-2'>Topup</div>
                                 <div style={{background: '#E4E3E3', borderRadius: '40px'}} className='px-4 py-4'>
                                     {topUp?.length != 0 ? (
-                                        <table className='table table-borderless'>
+                                        <table className='table table-striped'>
                                             <thead>
                                                 <tr>
                                                     <th>Nominal</th>
@@ -49,7 +52,7 @@ export default function Laporan() {
                                 <div className='h3 fw-bold mx-3 mt-3 mb-2'>Transfer</div>
                                 <div style={{background: '#E4E3E3', borderRadius: '40px'}} className='px-4 py-5 table-responsive-lg'>
                                     {transfer?.length != 0 ? (
-                                        <table className='table'>
+                                        <table className='table table-striped'>
                                             <thead>
                                                 <tr>
                                                     <th>Pengirim</th>
