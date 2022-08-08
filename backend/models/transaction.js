@@ -29,6 +29,8 @@ module.exports = (sequelize, DataTypes) => {
   transaction.init({
     idSender: DataTypes.INTEGER,
     idReceiver: DataTypes.INTEGER,
+    nominal: DataTypes.INTEGER,
+    idReceiver: DataTypes.INTEGER,
     type: DataTypes.STRING
   }, {
     sequelize,

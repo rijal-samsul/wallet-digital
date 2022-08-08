@@ -63,9 +63,24 @@ exports.updateWallet = async (req, res) => {
         });
     }catch(error){
         console.log(error);
-        res.send({
+        res.status(400).send({
             status: "failed",
             message: "server error",
+        })
+    }
+}
+
+exports.getWallets = async (req, res) => {
+    try {
+        let wallets = await user.findAll()
+
+        res.status(200).send({
+            status:"success",
+            wallets
+        })
+    } catch (error) {
+        res.status(400).send({
+            status:"error"
         })
     }
 }

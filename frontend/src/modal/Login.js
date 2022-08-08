@@ -15,7 +15,6 @@ export default function Login({ login, closeLogin, handleRegister }){
         password: ''
     }) 
     
-    const api = API()
     const navigate = useNavigate()
 
     const { email, password } = form
@@ -35,23 +34,21 @@ export default function Login({ login, closeLogin, handleRegister }){
             const body = JSON.stringify(form)
 
             const config = {
-                method: 'POST',
                 headers: {
                     'Content-Type' : 'application/json'
-                },
-                body: body
+                }
             }
 
-            const response = await api.post('/login', config)
+            const response = await API.post('/login',body, config)
             console.log(response)
 
-            if (response.status === 'success') {
+            if (response.status == 200) {
                 dispatch({
                     type: 'LOGIN_SUCCESS',
-                    payload: response.data
+                    payload: response.data.data
                 })
 
-                navigate('/profile')
+                navigate(`/profile/${response.data.data.id}`)
             } else {
                 const alert = (
                     <div className='alert alert-danger py-2 fw-bold' role='alert'>

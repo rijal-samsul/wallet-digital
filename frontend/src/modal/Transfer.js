@@ -1,12 +1,33 @@
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { Modal } from 'react-bootstrap'
-import {transData} from '../dummy/transfer'
+import {API} from '../config/api'
+import { useMutation } from 'react-query';
+import { UserContext } from '../context/userContext';
 
 export default function Transfers({ transfer, closeTrans }) {
 
     const [form, setForm] = useState({
         nominal: ''
     })
+
+    const [state, dispatch] = useContext(UserContext)
+
+    const [selected, setSelected] = useState({})
+
+    const [wallets, setWallets] = useState([])
+
+    const getWallets = async () => {
+        try {
+            const response = await API.get('/wallets')
+            setWallets(response.data.wallets);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => {
+        getWallets();
+    }, []);
 
     const { nominal } = form
 
@@ -17,9 +38,35 @@ export default function Transfers({ transfer, closeTrans }) {
         })
     }
 
-    const [email, setEmail] = useState(transData)
+    const handleSelected = (item) => {
+        setSelected(item)
+    }
+
     
-  return (
+    let data = {
+        sender: state.user.id,
+        receiver: selected.id,
+        nominal:form.nominal
+    }
+    const handleTransfer = useMutation(async (e) => {
+        try {
+            e.preventDefault();
+            const body = JSON.stringify(data);
+            // Configuration
+            const config = {
+                headers: {
+                    "Content-type": "application/json"
+                }
+            };
+            // Insert transaction data
+            const response = await API.post('/transaction',body, config);
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    });
+    
+    return (
     <Modal
         
         show={transfer}
@@ -29,7 +76,7 @@ export default function Transfers({ transfer, closeTrans }) {
     >
         <Modal.Header closeButton /> 
         <Modal.Body
-         className='mx-3 mb-4'
+        className='mx-3 mb-4'
         >
             <div className='h2 mt-2 mb-5 fw-bold d-flex justify-content-center'>Transfer Saldo</div>
             <div>
@@ -41,8 +88,8 @@ export default function Transfers({ transfer, closeTrans }) {
                             style={{background: 'rgba(210, 210, 210, 0.25)'}}
                         >
                             <option selected>email akun</option>
-                            {email.map((item, index) => (
-                                <option key={index} >{item.pengirim}</option>
+                            {wallets.map((item, index) => (
+                                <option onClick={()=> handleSelected(item)} style={{color:"white"}} key={index} >{item?.email}</option>
                             ))}
                             {/* <option>{item.email}</option> */}
                         </select>
@@ -61,7 +108,7 @@ export default function Transfers({ transfer, closeTrans }) {
                         />
                     </div>
                     <div className='d-grid my-5'>
-                        <button className='auth'>Transfer</button>
+                        <button onClick={(e) => handleTransfer.mutate(e)} className='auth'>Transfer</button>
                     </div>
                 </form>
             </div>
