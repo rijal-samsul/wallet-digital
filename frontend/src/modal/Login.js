@@ -1,20 +1,12 @@
 import { Modal, Button, Alert, Form } from "react-bootstrap"
 import React, { useContext, useState } from "react"
-import Register from "./Register";
 import { useMutation } from 'react-query'
 import { UserContext } from "../context/userContext";
 import { API } from "../config/api";
 import { useNavigate } from "react-router-dom";
 
 
-export default function Login({show, handleClose}){
-    const [regShow, setRegShow] = useState(false);
-    const handleRegClose = () => setRegShow(false);
-    const handleRegShow = () => setRegShow(true);
-
-    const handleRegister = () => {
-        handleRegShow();
-    };
+export default function Login({ login, closeLogin, handleRegister }){
 
     const [message, setMessage] = useState(null);
     const [state, dispatch] = useContext(UserContext)
@@ -81,11 +73,11 @@ export default function Login({show, handleClose}){
     }) 
 
     return(
-        <Modal show={show} onHide={handleClose} centered>
+        <Modal show={login} onHide={closeLogin} centered>
             <Modal.Header closeButton></Modal.Header>
             <Modal.Body>
                 {message && message}
-                <h2 style={{ textAlign:"center"}}>Login</h2>
+                <h2 style={{ textAlign:"center", fontWeight: "bold"}}>Login</h2>
                 <Form onSubmit={(e) => handleSubmit.mutate(e)}>
                     <div className="mt-3 form">
                         <div>Email</div>
@@ -117,10 +109,6 @@ export default function Login({show, handleClose}){
                 </Form>
                 <p style={{textAlign:"center"}}>Don't have an account? klik <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleRegister}>here</span></p>
             </Modal.Body>
-            <Register
-                show={regShow}
-                handleClose={handleRegClose}
-            />
         </Modal>
     )
 }
