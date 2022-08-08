@@ -13,7 +13,6 @@ export default function Register({ register, handleLogin,closeRegister }){
         name: ''
     })
 
-    const api = API()
     const { email, password, name } = form
 
     const handleChange = (e) => {
@@ -31,16 +30,15 @@ export default function Register({ register, handleLogin,closeRegister }){
             const body = JSON.stringify(form)
 
             const config = {
-                method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
-                },
-                body: body
+                }
             }
 
-            const response = await api.post('/register', config)
+            const response = await API.post('/register',body, config)
+            console.log(response.data);
 
-            if (response.status === 'success') {
+            if (response.status == 200) {
                 const alert = (
                     <div className='alert alert-dark py-2 fw-bold' role='alert'>
                         Register Success

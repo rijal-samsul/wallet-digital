@@ -6,32 +6,51 @@ import Laporan from "./pages/laporan";
 import { useContext, useEffect } from "react";
 
 import { UserContext } from "./context/userContext";
-import { API } from "./config/api";
+import { API, setAuthToken } from "./config/api";
 import PrivateRoute from "./component/privateRoute";
 
+if(localStorage.token){
+  setAuthToken(localStorage.token)
+}
 
 function App() {
 
   const [state, dispatch] = useContext(UserContext)
-  const api = API()
   const navigate = useNavigate()
 
-  useEffect(() => {
-    if (!state.isLogin) {
+  const checkUser = async () => {
+    try {
+      const response = await API.get('/check-auth')
+      if(response.status == 500){
+        return dispatch({
+          type:'LOGOUT'
+        })
+      }
+
+      let payload = response.data.data.user;
+      // // Get token from local storage
+      payload.token = localStorage.token;
+      dispatch({
+        type: 'LOGIN_SUCCESS',
+        payload,
+      })
+
+    } catch (error) {
       navigate('/auth')
-    } else {
-      if (state.user.status === 'success') {
-        navigate('/profile')
-      } 
+      
     }
-  }, [state])
+  }
+
+  useEffect(() => {
+    checkUser()
+  }, [])
 
   return (
     <Routes>
       <Route path="/auth" element={<LandingPage/>} />
       <Route path="/about" element={<About />} />
       <Route path="/" element={<PrivateRoute />}>
-        <Route path="/profile" element={<Profile />} />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route path="/laporan" element={<Laporan />} />
       </Route>
     </Routes>

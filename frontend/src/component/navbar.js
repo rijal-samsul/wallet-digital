@@ -24,6 +24,7 @@ export default function Navbar({title}) {
     }
 
     const [state, dispatch] = useContext(UserContext)
+    let id = state.user.id
     const navigate = useNavigate()
 
     const logout = () => {
@@ -31,7 +32,6 @@ export default function Navbar({title}) {
         type: 'LOGOUT'
         })
         navigate('/auth')
-        console.log(state)
     }
 
     return (
@@ -51,7 +51,7 @@ export default function Navbar({title}) {
                     </>
                 ) : (
                     <>
-                        <li><Link to='/profile' className={title === 'Profile' ? `text-navbar-active` : `text-navbar`}>Profile</Link></li>
+                        <li><Link to={`/profile/${id}`} className={title === 'Profile' ? `text-navbar-active` : `text-navbar`}>Profile</Link></li>
                         <li><Link to='/laporan' className={title === 'Laporan' ? `text-navbar-active` : `text-navbar`}>Laporan</Link></li>
                         <li><a onClick={logout} className='logout text-navbar'>Logout</a></li>
                     </>  
