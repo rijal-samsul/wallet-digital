@@ -102,12 +102,12 @@ export default function Login({ login, closeLogin, handleRegister }){
 
                     </div>
                     <div className="d-grid gap-2 mt-5">
-                        <Button type='submit' className="btn btn-login" style={{ width: '100%', color: "white" }} variant="warning">
+                        <Button type='submit' className="auth" style={{ width: '100%', color: "white" }} variant="warning">
                         Login
                         </Button>
                     </div>
                 </Form>
-                <p style={{textAlign:"center"}}>Don't have an account? klik <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleRegister}>here</span></p>
+                <p style={{textAlign:"center", marginTop: '20px'}}>Don't have an account? klik <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleRegister}>here</span></p>
             </Modal.Body>
         </Modal>
     )

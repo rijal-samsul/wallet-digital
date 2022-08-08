@@ -17,7 +17,7 @@ export default function About(){
                     <Col md="6">
                         <div className="firstColoumnAbout">
                             <p className='context'>
-                            In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful co In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.
+                            E-wallet is a service that is electronic and serves to store data and payment instruments. With e-wallet, users can save their money to make financial transactions, both online and offline. Basically, an e-wallet functions like a physical wallet that can be used to make secure payments. If you use an e-wallet, someone can make cashless payments when they want to pay for food, airline tickets, cinema tickets, and online shopping.
                             </p>
                         </div>
                     </Col >     

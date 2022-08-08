@@ -26,8 +26,8 @@ export default function LandingPage() {
     return (
         <>
             <Navbar />
-            <Container className='my-5'>
-                <Row>
+            <Container className='my-5 '>
+                <Row className='mt-5'>
                     <Col md='6' >
                     <div className='d-flex flex-column justify-content-center '>
                         <div className='align-items-start mt-2'>
@@ -36,7 +36,7 @@ export default function LandingPage() {
                         </div>
                         <div className='context mt-4'>
                             <p>
-                            In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form of a document or a typeface without relying on meaningful content.
+                            E-wallet is a service that is electronic and serves to store data and payment instruments. With e-wallet, users can save their money to make financial transactions, both online and offline.
                             </p>
                         </div>
                         <div>
