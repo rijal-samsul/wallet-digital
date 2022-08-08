@@ -21,10 +21,6 @@ body {
   display: none !important;
 }
 
-::-webkit-scrollbar {
-  display: none;
-}
-
 /* Create style for navbar */
 
 nav {
@@ -47,6 +43,14 @@ nav ul li {
   display: inline-block;
   line-height: 80px;
   margin: 0 5px;
+}
+
+label.logo {
+  font-size: 30px;
+  line-height: 80px;
+  padding: 0 100px;
+  font-weight: bold;
+  font-family: 'Aleo';
 }
 
 .text-navbar {
@@ -82,6 +86,7 @@ nav ul li {
   color: #ffffff !important;
   font-size: 20px;
   padding: 7px 25px;
+  cursor: pointer;
 }
 
 .logout:hover, .auth:hover {
@@ -145,8 +150,9 @@ a:hover {
   font-family: 'Aleo';
 }
 
-.modal.show .modal-dialog {
-  width: 430px;
+.modal-content {
+  width: 430px !important;
+  padding: 10px;
   font-family: 'Aleo';
 }
 
@@ -154,6 +160,7 @@ a:hover {
   border-bottom: none !important;
   padding-bottom: 0 !important;
 }
+
 
 /* Laporan style */
 

@@ -35,12 +35,13 @@ export default function Navbar({title}) {
     }
 
     return (
-        <nav>
+        <nav className='shadow'>
             <input type='checkbox' id="check" />
             <label htmlFor="check" className='checkbtn'>
                 <img src={toggle} alt="" />
             </label>
-            <ul className=' mx-5'>
+            <label className='logo'>E-Wallet</label>
+            <ul >
                 {!state.isLogin ? (
                     <>
                         <li><Link to='/auth' className='text-navbar'>Home</Link></li>

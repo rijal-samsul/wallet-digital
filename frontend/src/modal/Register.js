@@ -111,12 +111,12 @@ export default function Register({ register, handleLogin,closeRegister }){
                         />
                     </div>
                     <div className="d-grid gap-2 mt-5">
-                        <Button type="submit" className="btn btn-login" style={{ width: '100%', color: "white" }} variant="warning">
+                        <Button type="submit" className="auth" style={{ width: '100%', color: "white" }} variant="warning">
                         Register
                         </Button>
                     </div>
                 </Form>
-                <p style={{textAlign:"center"}}>Already have an account? klik
+                <p style={{textAlign:"center", marginTop: '20px'}}>Already have an account? klik
                         <span style={{ fontWeight: 'bold', cursor:'pointer' }} onClick={handleLogin}> here</span>
                 </p>
             </Modal.Body>
