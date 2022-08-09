@@ -5,6 +5,8 @@ import { topup } from '../dummy/topup'
 import { transData } from '../dummy/transfer'
 import {API} from '../config/api'
 import rupiahFormat from 'rupiah-format';
+import SearchIcon from '@material-ui/icons/Search'
+import CloseIcon from '@material-ui/icons/Close'
 import moment from 'moment'
 
 export default function Laporan() {
@@ -15,6 +17,7 @@ export default function Laporan() {
     const [dataTopup, setdataTopup] = useState([])
     const [topUp, setTopUp] = useState(topup)
     const [transfer, setTransfer] = useState(transData)
+    const [search, setSearch] = useState('')
 
     // GET DATA TRANSACTION DEFAULT
     const getMyWallet = async () => {
@@ -35,7 +38,7 @@ export default function Laporan() {
             console.log(error);
         }
     }
-
+console.log(transfer)
 
     useEffect(() => {
         getMyWallet();
@@ -80,6 +83,29 @@ export default function Laporan() {
                             </Col>
                             <Col>
                                 <div className='h3 fw-bold mx-3 mt-3 mb-2'>Transfer</div>
+                                <div className='form-group mb-3 d-flex'>
+                                    <input 
+                                        className='form-control' 
+                                        type='text' 
+                                        style={{backgroundColor: '#E4E3E3', border: '1px solid #BCBCBC', color: '#000000', maxWidth: '400px', borderRight: 'none', borderTopRightRadius: '0',
+                                        borderBottomRightRadius: '0'}} 
+                                        onChange={(e) => setSearch(e.target.value)}
+                                        placeholder='Search...'  
+                                        value={search}
+                                    />
+                                    {search.length === 0 ? (
+                                        <SearchIcon 
+                                            className='headerIcon px-1' 
+                                            style={{fontSize: '40px'}}
+                                            />
+                                        ) : (
+                                            <CloseIcon
+                                            className='headerIcon px-1' 
+                                            style={{fontSize: '40px'}}
+                                            onClick={() => setSearch('')}
+                                            />
+                                    )}
+                                </div>
                                 <div style={{background: '#E4E3E3', borderRadius: '10px'}} className='px-4 py-5 table-responsive-lg'>
                                     {transfer?.length != 0 ? (
                                         <table className='table table-striped'>
@@ -92,7 +118,27 @@ export default function Laporan() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {transfer?.map((item, index) => (
+                                                {transfer?.filter((item, index) => {
+                                                    if (search === '') {
+                                                        return <>
+                                                        <tr key={index}>
+                                                        <td>{item.pengirim}</td>
+                                                        <td>{item.penerima}</td>
+                                                        <td colspan="2">{item.nominal}</td>
+                                                        <td>{item.tanggal}</td>
+                                                        </tr>
+                                                        </>
+                                                    } else if (item.pengirim.toLowerCase().includes(search.toLowerCase())) {
+                                                        return <>
+                                                        <tr key={index}>
+                                                        <td>{item.pengirim}</td>
+                                                        <td>{item.penerima}</td>
+                                                        <td colspan="2">{item.nominal}</td>
+                                                        <td>{item.tanggal}</td>
+                                                        </tr>
+                                                        </>
+                                                    }
+                                                }).map((item, index) => (
                                                     <tr key={index}>
                                                         <td>{item.pengirim}</td>
                                                         <td>{item.penerima}</td>

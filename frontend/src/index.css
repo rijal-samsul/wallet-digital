@@ -102,6 +102,16 @@ a:hover {
   border-bottom: 4px solid #ee9b00;
 }
 
+.headerIcon {
+  cursor: pointer;
+  background: #E4E3E3;
+  border-bottom-right-radius: 3px;
+  border-top-right-radius: 3px;
+  border: 1px solid #BCBCBC;
+  border-left: 0;
+  color: #555b6e;
+}
+
 .checkbtn {
   font-size: 30px;
   color: white;
