@@ -39,11 +39,11 @@ function App() {
       navigate('/auth')
       
     }
-  }
+  } 
 
   useEffect(() => {
     checkUser()
-  }, [])
+  }, []) 
 
   return (
     <Routes>
