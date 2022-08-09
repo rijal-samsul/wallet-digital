@@ -81,7 +81,7 @@ exports.getTopup = async (req, res) => {
     try {
         let transactions = await transaction.findAll({
             where:{
-                idSender:req.user.id
+                type:"Topup"
             }
         })
         res.status(200).send({
@@ -136,5 +136,22 @@ exports.transactions = async (req, res) => {
 
     } catch (error) {
         console.log(error);
+    }
+}
+
+exports.getTopup = async (req, res) => {
+    try {
+        let transactions = await transaction.findAll({
+            where:{
+                type:"Transfer"
+            }
+        })
+        res.status(200).send({
+            transactions
+        })
+    } catch (error) {
+        res.status(400).send({
+            status:"server error"
+        })
     }
 }

@@ -31,6 +31,9 @@ export default function Topup({show, handleClose}){
             };
             // Insert transaction data
             const response = await API.patch('/wallet',body, config);
+            if(response.status == 200){
+                setTopupShow(false)
+            }
         } catch (error) {
             console.log(error);
         }
@@ -48,10 +51,10 @@ export default function Topup({show, handleClose}){
                 </Form>
             </Modal.Body>
             <Modal.Footer>
-                <Button variant="danger" onClick={handleClose}>
+                <Button style={{color:"white"}} variant="danger" onClick={handleClose}>
                     Close
                 </Button>
-                <Button  onClick={(e) => handleTopup.mutate(e)} variant="warning" >
+                <Button style={{color:"white"}} onClick={(e) => handleTopup.mutate(e)} variant="warning" >
                     Top up
                 </Button>
             </Modal.Footer>
