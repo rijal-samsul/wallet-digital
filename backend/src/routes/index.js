@@ -6,7 +6,7 @@ const { addUSer, getUsers, getUser, updateUser, deleteUser} = require("../contro
 const { register, login, checkAuth } = require("../controllers/auth")
 const { getWallet, updateWallet, getWallets } = require("../controllers/wallet")
 const { auth } = require("../middleware/auth")
-const { transaction, getTopup } = require('../controllers/transaction');
+const { transaction, getTopup, transactions } = require('../controllers/transaction');
 
 router.post("/user", addUSer);
 router.get("/user", getUsers);
@@ -24,6 +24,7 @@ router.get("/check-auth", auth, checkAuth)
 
 router.post('/transaction', auth, transaction);
 router.get('/transactions', auth, getTopup);
+router.get('/trans', auth, transactions);
 
 
 module.exports = router

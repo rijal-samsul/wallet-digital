@@ -16,6 +16,7 @@ export default function Laporan() {
     const [topUp, setTopUp] = useState(topup)
     const [transfer, setTransfer] = useState(transData)
 
+    // GET DATA TRANSACTION DEFAULT
     const getMyWallet = async () => {
         try {
             const response = await API.get('/transactions')
@@ -25,10 +26,20 @@ export default function Laporan() {
         }
     }
 
-    console.log(dataTopup);
+    // FETCH DATA TRANSACTIONS
+    const transactions = async () => {
+        try {
+            const response = await API.get('/trans')
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
 
     useEffect(() => {
         getMyWallet();
+        transactions()
     }, []);
 
   return (
