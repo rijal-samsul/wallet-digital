@@ -1,16 +1,35 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Col, Container, Row } from 'react-bootstrap'
 import Navbar from '../component/navbar'
 import { topup } from '../dummy/topup'
 import { transData } from '../dummy/transfer'
+import {API} from '../config/api'
+import rupiahFormat from 'rupiah-format';
+import moment from 'moment'
 
 export default function Laporan() {
 
     const title = 'Laporan'
     document.title = 'Wallet Digital | ' + title
-
+    
+    const [dataTopup, setdataTopup] = useState([])
     const [topUp, setTopUp] = useState(topup)
     const [transfer, setTransfer] = useState(transData)
+
+    const getMyWallet = async () => {
+        try {
+            const response = await API.get('/transactions')
+            setdataTopup(response.data.transactions);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    console.log(dataTopup);
+
+    useEffect(() => {
+        getMyWallet();
+    }, []);
 
   return (
     <>
@@ -33,10 +52,10 @@ export default function Laporan() {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                {topUp?.map((item, index) => (
+                                                {dataTopup?.map((item, index) => (
                                                     <tr>
-                                                        <td>{item.nominal}</td>
-                                                        <td>{item.tanggal}</td>
+                                                        <td key={index}>{rupiahFormat.convert(item?.nominal)}</td>
+                                                        <td>{moment(item?.createdAt).format('LL')}</td>
                                                     </tr>
                                                 ))}
                                             </tbody>
