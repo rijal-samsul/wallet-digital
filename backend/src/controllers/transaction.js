@@ -107,7 +107,7 @@ const updateSaldo = async (orderId) => {
         },
         include: [
             {
-                model: wallet,
+                model:wallet,
                 as: 'receiver',
                 attributes: {
                     exclude: ['createdAt', 'updatedAt', 'password']
@@ -122,13 +122,14 @@ const updateSaldo = async (orderId) => {
             }
         ],
     });
+
     const body = {
         saldo: transactionData.receiver.saldo + parseInt(transactionData.nominal)
     }
 
     await wallet.update(body, {
         where:{
-            idUser: transactionData.idReceiver
+            idUser: transactionData.receiver.id
         }
     });
 };
