@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      transaction.belongsTo(models.user, {
+      transaction.belongsTo(models.wallet, {
         as: "sender",
         foreignKey:{
           name: "idSender",
         },
       });
 
-      transaction.belongsTo(models.user, {
+      transaction.belongsTo(models.wallet, {
         as: "receiver",
         foreignKey:{
           name:"idReceiver",

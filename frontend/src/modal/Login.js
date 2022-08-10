@@ -40,7 +40,6 @@ export default function Login({ login, closeLogin, handleRegister }){
             }
 
             const response = await API.post('/login',body, config)
-            console.log(response)
 
             if (response.status == 200) {
                 dispatch({

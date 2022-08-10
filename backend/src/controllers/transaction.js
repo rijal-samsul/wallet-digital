@@ -1,116 +1,153 @@
 const { wallet, user, transaction } = require("../../models")
+const midtransClient = require("midtrans-client");
 
-exports.transaction = async (req, res) => {
+exports.topUp = async (req, res) => {
     try {
-
-        const {sender, nominal, receiver} = req.body
-
-        const dataWallet = await wallet.findOne({
-            where: {
-                idUser: sender
-            }
-        })
-
-        if (dataWallet.saldo < nominal) {
-            return res.status(400).send({
-                message: 'maaf saldo anda tidak cukup!',
-            });
+        let data = req.body
+        data = {
+            id: parseInt(req.user.id + Math.random().toString().slice(3, 8)),
+            idSender: req.user.id,
+            idReceiver: req.user.id,
+            nominal: req.body.nominal,
+            email:req.body.email,
+            name:req.body.name,
+            type: "Topup"
         }
 
-        const dataTransfer = await wallet.findOne({
-            where: {
-                idUser: receiver
-            }
-        })
+        const newData = await transaction.create(data);
 
-        const bodyData = {
-            saldo: dataTransfer.saldo + parseInt(nominal)
-        }
-
-        await wallet.update(bodyData, {
-            where: {
-                idUser: receiver
-            }
+        let snap = new midtransClient.Snap({
+            isProduction: false,
+            serverKey: process.env.MIDTRANS_SERVER_KEY,
         });
 
-        const userWallet = await wallet.findOne({
-            where: {
-                idUser: sender
-            }
-        })
+        let parameter = {
+            transaction_details: {
+                order_id: newData.id,
+                gross_amount: newData.nominal,
+            },
+            credit_card: {
+                secure: true,
+            },
+            customer_details: {
+                name: data?.name,
+                email: data?.email
+            },
+        };
 
-        if (userWallet.saldo < req.body.nominal) {
-            return res.status(400).send({
-                message: 'maaf saldo tidak cukup',
-            });
-        }
-
-        const dataSaldo = {
-            saldo: userWallet.saldo - nominal
-        }
-
-        await wallet.update(dataSaldo, {
-            where: {
-                idUser: sender
-            }
-        });
-
-        const dataTransaksi = await transaction.create({
-            idReceiver: receiver,
-            nominal: nominal,
-            idSender: sender,
-            type: 'Transfer'
-        });
+        const payment = await snap.createTransaction(parameter);
 
         res.status(200).send({
-            message: 'Transfer berhasil',
-            dataTransaksi
-        });
+            status:"success",
+            payment
+        })
 
     } catch (error) {
         console.log(error);
-        res.status(500).send({
-            status: 'failed',
-            message: 'Server Error',
-        });
+        res.status(400).send({
+            status:"failed"
+        })
+    }
+}
+
+const MIDTRANS_CLIENT_KEY = process.env.MIDTRANS_CLIENT_KEY;
+const MIDTRANS_SERVER_KEY = process.env.MIDTRANS_SERVER_KEY;
+
+const core = new midtransClient.CoreApi();
+
+core.apiConfig.set({
+    isProduction: false,
+    serverKey: MIDTRANS_SERVER_KEY,
+    clientKey: MIDTRANS_CLIENT_KEY,
+});
+
+/**
+ *  Handle update transaction status after notification
+ * from midtrans webhook
+ * @param {string} status
+ * @param {transactionId} transactionId
+ */
+
+exports.notification = async (req, res) => {
+    try {
+        const statusResponse = await core.transaction.notification(req.body);
+        const orderId = statusResponse.order_id;
+        const transactionStatus = statusResponse.transaction_status;
+        const fraudStatus = statusResponse.fraud_status;
+        if (transactionStatus == "capture") {
+            if (fraudStatus == "challenge") {
+                res.status(200);
+            } else if (fraudStatus == "accept") {
+                updateSaldo(orderId)
+                res.status(200);
+            }
+        } else if (transactionStatus == "settlement") {
+            updateSaldo(orderId)
+            res.status(200);
+        } else if (
+            transactionStatus == "cancel" ||
+            transactionStatus == "deny" ||
+            transactionStatus == "expire"
+        ) {
+            res.status(200);
+        } else if (transactionStatus == "pending") {
+            res.status(200);
+        }
+    } catch (error) {
+        console.log(error);
+        res.status(400);
     }
 };
 
 
-exports.getTopup = async (req, res) => {
-    try {
-        let transactions = await transaction.findAll({
-            where:{
-                type:"Topup"
+const updateSaldo = async (orderId) => {
+    const transactionData = await transaction.findOne({
+        where: {
+            id: orderId,
+        },
+        include: [
+            {
+                model: wallet,
+                as: 'receiver',
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                },
+            },
+            {
+                model: wallet,
+                as: 'sender',
+                attributes: {
+                    exclude: ['createdAt', 'updatedAt', 'password']
+                },
             }
-        })
-        res.status(200).send({
-            transactions
-        })
-    } catch (error) {
-        res.status(400).send({
-            status:"server error"
-        })
+        ],
+    });
+    const body = {
+        saldo: transactionData.receiver.saldo + parseInt(transactionData.nominal)
     }
-}
+
+    await wallet.update(body, {
+        where:{
+            idUser: transactionData.idReceiver
+        }
+    });
+};
+
 
 exports.transactions = async (req, res) => {
 
     try {
         let dataTransactions = await transaction.findAll({
-            // where:{
-            //     sender: req.user.id
-            // },
             include: [
                 {
-                    model: user,
+                    model: wallet,
                     as: 'receiver',
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'password']
                     },
                 },
                 {
-                    model: user,
+                    model: wallet,
                     as: 'sender',
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'password']
@@ -136,22 +173,5 @@ exports.transactions = async (req, res) => {
 
     } catch (error) {
         console.log(error);
-    }
-}
-
-exports.getTopup = async (req, res) => {
-    try {
-        let transactions = await transaction.findAll({
-            where:{
-                type:"Transfer"
-            }
-        })
-        res.status(200).send({
-            transactions
-        })
-    } catch (error) {
-        res.status(400).send({
-            status:"server error"
-        })
     }
 }
