@@ -20,7 +20,7 @@ exports.getWallet = async (req, res) => {
         });
         res.send({
             status:"success",
-            data,
+            data
         })
     }catch(error){
         console.log(error);
