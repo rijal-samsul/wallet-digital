@@ -43,15 +43,8 @@ exports.register = async (req, res) => {
 
         await wallet.create({saldo: "0", idUser: newUser.id})
 
-        const token = jwt.sign({id: user.id }, process.env.TOKEN_KEY);
-
         res.status(200).send({
-            status: "success",
-            data:{
-                name: newUser.name,
-                email: newUser.email,
-                token,
-            },
+            status: "Registration Success",
         });
     }catch (error){
         console.log(error);

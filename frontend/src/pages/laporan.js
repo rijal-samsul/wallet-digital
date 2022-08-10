@@ -12,34 +12,20 @@ export default function Laporan() {
     const title = 'Laporan'
     document.title = 'Wallet Digital | ' + title
 
-    const [dataTopup, setdataTopup] = useState([])
-    const [topUp, setTopUp] = useState(topup)
-    const [transfer, setTransfer] = useState(transData)
-    const [dataTransfer, setdataTransfer] = useState([])
-
-    // GET DATA TRANSACTION DEFAULT
-    const getMyWallet = async () => {
-        try {
-            const response = await API.get('/transactions')
-            setdataTopup(response.data.transactions);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    const [transactions, setTransaction] = useState([])
 
     // FETCH DATA TRANSACTIONS
-    const transactions = async () => {
+    const getTransacsions = async () => {
         try {
-            const response = await API.get('/trans')
-            setdataTransfer(response.data.data);
+            const response = await API.get('/transactions')
+            setTransaction(response.data.data);
         } catch (error) {
             console.log(error);
         }
     }
 
     useEffect(() => {
-        getMyWallet();
-        transactions()
+        getTransacsions()
     }, []);
 
     return (
@@ -54,7 +40,7 @@ export default function Laporan() {
                                 <Col>
                                     <div className='h3 fw-bold mx-3 mb-2'>Topup</div>
                                     <div style={{ background: '#E4E3E3', borderRadius: '10px', maxWidth: '520px' }} className='px-4 py-4'>
-                                        {topUp?.length != 0 ? (
+                                        {transactions?.length != 0 ? (
                                             <table className='table table-striped'>
                                                 <thead>
                                                     <tr>
@@ -63,7 +49,7 @@ export default function Laporan() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {dataTransfer?.filter((dataTransfer) => dataTransfer.type === 'Topup').map((item, index) => (
+                                                    {transactions?.filter((transactions) => transactions.type === 'Topup').map((item, index) => (
                                                         <tr>
                                                             <td key={index}>{rupiahFormat.convert(item?.nominal)}</td>
                                                             <td>{moment(item?.createdAt).format('LL')}</td>
@@ -81,7 +67,7 @@ export default function Laporan() {
                                 <Col>
                                     <div className='h3 fw-bold mx-3 mt-3 mb-2'>Transfer</div>
                                     <div style={{ background: '#E4E3E3', borderRadius: '10px' }} className='px-4 py-5 table-responsive-lg'>
-                                        {dataTransfer?.length != 0 ? (
+                                        {transactions?.length != 0 ? (
                                             <table className='table table-striped'>
                                                 <thead>
                                                     <tr>
@@ -92,7 +78,7 @@ export default function Laporan() {
                                                     </tr>
                                                 </thead>
                                                 <tbody>
-                                                    {dataTransfer?.filter((dataTransfer) => dataTransfer.type === 'Transfer').map((item, index) => (
+                                                    {transactions?.filter((transactions) => transactions.type === 'Transfer').map((item, index) => (
                                                         <tr key={index}>
                                                             <td>{item?.sender?.email}</td>
                                                             <td>{item?.receiver?.email}</td>

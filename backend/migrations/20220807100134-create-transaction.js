@@ -11,8 +11,8 @@ module.exports = {
       idSender: {
         type: Sequelize.INTEGER,
         references: {
-          model: "users",
-          key: "id",
+          model: "wallets",
+          key: "idUser",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",
@@ -20,8 +20,8 @@ module.exports = {
       idReceiver: {
         type: Sequelize.INTEGER,
         references: {
-          model: "users",
-          key: "id",
+          model: "wallets",
+          key: "idUser",
         },
         onUpdate: "CASCADE",
         onDelete: "CASCADE",

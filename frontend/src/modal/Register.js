@@ -36,7 +36,6 @@ export default function Register({ register, handleLogin,closeRegister }){
             }
 
             const response = await API.post('/register',body, config)
-            console.log(response.data);
 
             if (response.status == 200) {
                 const alert = (

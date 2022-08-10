@@ -1,4 +1,4 @@
-const { wallet, user, transaction } = require("../../models")
+const { wallet, user } = require("../../models")
 
 exports.getWallet = async (req, res) => {
     try{
@@ -30,45 +30,6 @@ exports.getWallet = async (req, res) => {
         });
     }
 };
-
-exports.updateWallet = async (req, res) => {
-    try{
-        const data = await wallet.findOne({
-            where:{
-                idUser: req.user.id,
-            }
-        })
-
-        const body = {
-            saldo: data.saldo + parseInt(req.body.saldo)
-        }
-
-        await wallet.update(body, {
-            where:{
-                idUser: req.user.id,
-            }
-        });
-
-        await transaction.create({
-            nominal: req.body.saldo,
-            idSender: req.user.id,
-            idReceiver: req.user.id,
-            type: "Topup"
-        });
-
-        res.status(200).send({
-            message: "topup success",
-            body,
-            data: req.body.saldo,
-        });
-    }catch(error){
-        console.log(error);
-        res.status(400).send({
-            status: "failed",
-            message: "server error",
-        })
-    }
-}
 
 exports.getWallets = async (req, res) => {
     try {
