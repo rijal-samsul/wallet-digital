@@ -23,7 +23,7 @@ router.get("/check-auth", auth, checkAuth)
 
 router.get("/transactions",auth, transactions)
 router.post('/topup', auth, topUp);
-router.post("/notification",auth, notification);
+router.post("/notification", notification);
 
 
 module.exports = router
