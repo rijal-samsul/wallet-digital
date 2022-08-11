@@ -77,26 +77,24 @@ exports.notification = async (req, res) => {
         const fraudStatus = statusResponse.fraud_status;
         if (transactionStatus == "capture") {
             if (fraudStatus == "challenge") {
-                res.status(200);
+                res.status(400);
             } else if (fraudStatus == "accept") {
                 handleStatus("Success", orderId)
                 updateSaldo(orderId)
                 res.status(200);
             }
         } else if (transactionStatus == "settlement") {
-            handleStatus("Success", orderId)
-            updateSaldo(orderId)
-            res.status(200);
+            res.status(400);
         } else if (
             transactionStatus == "cancel" ||
             transactionStatus == "deny" ||
             transactionStatus == "expire"
         ) {
             handleStatus("Cancel", orderId)
-            res.status(200);
+            res.status(400);
         } else if (transactionStatus == "pending") {
             handleStatus("Pending", orderId)
-            res.status(200);
+            res.status(400);
         }
     } catch (error) {
         console.log(error);
@@ -227,9 +225,6 @@ exports.transactions = async (req, res) => {
 
     try {
         let dataTransactions = await transaction.findAll({
-            where:{
-                idSender: req.user.id
-            },
             include: [
                 {
                     model: user,
@@ -248,10 +243,18 @@ exports.transactions = async (req, res) => {
             ],
         })
 
+        // console.log(data);
+        const dataSender = dataTransactions.filter((item) => item.sender.id === req.user.id)
+        const dataReceiver = dataTransactions.filter((item) => item.receiver.id === req.user.id)
+
+        let data = dataSender.concat(dataReceiver)
+        data = [...new Map(data.map(item => [item['id'], item])).values()]
+
+        data.sort((a, b) => b.createdAt - a.createdAt)
 
         res.send({
             status: 'success',
-            dataTransactions
+            data
             // dataTransactions
         })
 
