@@ -17,20 +17,6 @@ module.exports = (sequelize, DataTypes) => {
           name:"idUser",
         },
       });
-
-      wallet.hasMany(models.transaction, {
-        as: "senderTransaction",
-        foreignKey:{
-          name: "idSender",
-        },
-      });
-
-      wallet.hasMany(models.transaction, {
-        as:"receiverTransaction",
-        foreignKey:{
-          name:"idReceiver",
-        },
-      });
     }
   }
   wallet.init({

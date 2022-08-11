@@ -33,7 +33,15 @@ exports.getWallet = async (req, res) => {
 
 exports.getWallets = async (req, res) => {
     try {
-        let wallets = await user.findAll()
+        let wallets = await wallet.findAll({
+            include:{
+                model: user,
+                as: "user",
+                attributes: {
+                    exclude: ["createdAt", "updatedAt", "password"]
+                },
+            },
+        })
 
         res.status(200).send({
             status:"success",

@@ -11,7 +11,7 @@ module.exports = {
       idSender: {
         type: Sequelize.INTEGER,
         references: {
-          model: "wallets",
+          model: "users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -20,7 +20,7 @@ module.exports = {
       idReceiver: {
         type: Sequelize.INTEGER,
         references: {
-          model: "wallets",
+          model: "users",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -30,6 +30,9 @@ module.exports = {
         type: Sequelize.INTEGER
       },
       type: {
+        type: Sequelize.STRING
+      },
+      status: {
         type: Sequelize.STRING
       },
       createdAt: {
