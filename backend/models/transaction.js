@@ -11,14 +11,14 @@ module.exports = (sequelize, DataTypes) => {
      */
     static associate(models) {
       // define association here
-      transaction.belongsTo(models.wallet, {
+      transaction.belongsTo(models.user, {
         as: "sender",
         foreignKey:{
           name: "idSender",
         },
       });
 
-      transaction.belongsTo(models.wallet, {
+      transaction.belongsTo(models.user, {
         as: "receiver",
         foreignKey:{
           name:"idReceiver",
@@ -30,7 +30,8 @@ module.exports = (sequelize, DataTypes) => {
     idSender: DataTypes.INTEGER,
     nominal: DataTypes.INTEGER,
     idReceiver: DataTypes.INTEGER,
-    type: DataTypes.STRING
+    type: DataTypes.STRING,
+    status: DataTypes.STRING
   }, {
     sequelize,
     modelName: 'transaction',

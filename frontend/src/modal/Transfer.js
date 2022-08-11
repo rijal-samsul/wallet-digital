@@ -10,8 +10,6 @@ export default function Transfers({ transfer, closeTrans }) {
         nominal: ''
     })
 
-    const [state, dispatch] = useContext(UserContext)
-
     const [selected, setSelected] = useState({})
 
     const [wallets, setWallets] = useState([])
@@ -19,7 +17,7 @@ export default function Transfers({ transfer, closeTrans }) {
     const getWallets = async () => {
         try {
             const response = await API.get('/wallets')
-            setWallets(response.data.wallets);
+            setWallets(response?.data?.wallets);
         } catch (error) {
             console.log(error);
         }
@@ -41,13 +39,12 @@ export default function Transfers({ transfer, closeTrans }) {
     const handleSelected = (item) => {
         setSelected(item)
     }
-
     
     let data = {
-        sender: state.user.id,
         receiver: selected.id,
         nominal:form.nominal
     }
+
     const handleTransfer = useMutation(async (e) => {
         try {
             e.preventDefault();
@@ -59,13 +56,13 @@ export default function Transfers({ transfer, closeTrans }) {
                 }
             };
             // Insert transaction data
-            const response = await API.post('/transaction',body, config);
+            const response = await API.post('/transfer',body, config);
             console.log(response);
         } catch (error) {
             console.log(error);
         }
     });
-    
+
     return (
     <Modal
         
@@ -87,9 +84,9 @@ export default function Transfers({ transfer, closeTrans }) {
                             className='form-select'
                             style={{background: 'rgba(210, 210, 210, 0.25)'}}
                         >
-                            <option selected>email akun</option>
+                            <option hidden selected>email akun</option>
                             {wallets.map((item, index) => (
-                                <option onClick={()=> handleSelected(item)} style={{color:"white"}} key={index} >{item?.email}</option>
+                                <option onClick={()=> handleSelected(item)} style={{color:"white"}} key={index} >{item?.user?.email}</option>
                             ))}
                             {/* <option>{item.email}</option> */}
                         </select>

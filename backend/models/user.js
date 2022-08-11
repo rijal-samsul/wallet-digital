@@ -18,6 +18,19 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
 
+      user.hasMany(models.transaction, {
+        as: "senderTransaction",
+        foreignKey:{
+          name: "idSender",
+        },
+      });
+
+      user.hasMany(models.transaction, {
+        as:"receiverTransaction",
+        foreignKey:{
+          name:"idReceiver",
+        },
+      });
     }
   }
   user.init({

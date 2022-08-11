@@ -18,7 +18,7 @@ export default function Laporan() {
     const getTransacsions = async () => {
         try {
             const response = await API.get('/transactions')
-            setTransaction(response.data.data);
+            setTransaction(response.data.dataTransactions);
         } catch (error) {
             console.log(error);
         }
@@ -46,6 +46,7 @@ export default function Laporan() {
                                                     <tr>
                                                         <th>Nominal</th>
                                                         <th>Tanggal</th>
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -53,6 +54,7 @@ export default function Laporan() {
                                                         <tr>
                                                             <td key={index}>{rupiahFormat.convert(item?.nominal)}</td>
                                                             <td>{moment(item?.createdAt).format('LL')}</td>
+                                                            <td>{item?.status}</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>
@@ -75,6 +77,7 @@ export default function Laporan() {
                                                         <th>Penerima</th>
                                                         <th colspan="2">Nominal</th>
                                                         <th>Tanggal</th>
+                                                        <th>Status</th>
                                                     </tr>
                                                 </thead>
                                                 <tbody>
@@ -84,6 +87,7 @@ export default function Laporan() {
                                                             <td>{item?.receiver?.email}</td>
                                                             <td colspan="2">{rupiahFormat.convert(item?.nominal)}</td>
                                                             <td>{moment(item?.createdAt).format('LL')}</td>
+                                                            <td>{item?.status}</td>
                                                         </tr>
                                                     ))}
                                                 </tbody>

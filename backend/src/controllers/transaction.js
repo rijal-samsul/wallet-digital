@@ -11,7 +11,8 @@ exports.topUp = async (req, res) => {
             nominal: req.body.nominal,
             email:req.body.email,
             name:req.body.name,
-            type: "Topup"
+            type: "Topup",
+            status: "Pending"
         }
 
         const newData = await transaction.create(data);
@@ -78,10 +79,12 @@ exports.notification = async (req, res) => {
             if (fraudStatus == "challenge") {
                 res.status(200);
             } else if (fraudStatus == "accept") {
+                handleStatus("Success", orderId)
                 updateSaldo(orderId)
                 res.status(200);
             }
         } else if (transactionStatus == "settlement") {
+            handleStatus("Success", orderId)
             updateSaldo(orderId)
             res.status(200);
         } else if (
@@ -89,8 +92,10 @@ exports.notification = async (req, res) => {
             transactionStatus == "deny" ||
             transactionStatus == "expire"
         ) {
+            handleStatus("Cancel", orderId)
             res.status(200);
         } else if (transactionStatus == "pending") {
+            handleStatus("Pending", orderId)
             res.status(200);
         }
     } catch (error) {
@@ -107,14 +112,20 @@ const updateSaldo = async (orderId) => {
         },
         include: [
             {
-                model:wallet,
+                model:user,
                 as: 'receiver',
                 attributes: {
                     exclude: ['createdAt', 'updatedAt', 'password']
                 },
+                include:[
+                    {
+                        model:wallet,
+                        as:"wallet"
+                    }
+                ]
             },
             {
-                model: wallet,
+                model: user,
                 as: 'sender',
                 attributes: {
                     exclude: ['createdAt', 'updatedAt', 'password']
@@ -124,14 +135,91 @@ const updateSaldo = async (orderId) => {
     });
 
     const body = {
-        saldo: transactionData.receiver.saldo + parseInt(transactionData.nominal)
+        saldo: transactionData?.receiver?.wallet?.saldo + transactionData?.nominal
     }
 
     await wallet.update(body, {
         where:{
-            idUser: transactionData.receiver.id
+            idUser: transactionData?.idReceiver,
         }
     });
+};
+
+
+const handleStatus = async (status, transactionId) => {
+    await transaction.update(
+        {
+            status,
+        },
+        {
+            where: {
+                id: transactionId,
+            },
+        }
+    );
+};
+
+exports.transfer = async (req, res) => {
+    try {
+
+        const sender = await wallet.findOne({
+            where: {
+                idUser: req.user.id
+            }
+        })
+
+        const receiver = await wallet.findOne({
+            where: {
+                idUser: req.body.receiver
+            }
+        })
+
+        if (sender.saldo < req.body.nominal) {
+            return res.status(400).send({
+                message: 'Maaf saldo anda tidak cukup!',
+            });
+        }
+
+        const tambahSaldo = {
+            saldo: receiver.saldo + parseInt(req.body.nominal)
+        }
+
+        await wallet.update(tambahSaldo, {
+            where: {
+                idUser: receiver.idUser
+            }
+        });
+
+        const sisaSaldo = {
+            saldo: sender.saldo - req.body.nominal
+        }
+
+        await wallet.update(sisaSaldo, {
+            where: {
+                idUser: sender.idUser
+            }
+        });
+
+        const dataTransaksi = await transaction.create({
+            idReceiver: receiver?.idUser,
+            nominal: req.body.nominal,
+            idSender: req.user.id,
+            type: 'Transfer',
+            status:"Success"
+        });
+
+        res.status(200).send({
+            message: 'Transfer berhasil',
+            dataTransaksi
+        });
+
+    } catch (error) {
+        console.log(error);
+        res.status(500).send({
+            status: 'failed',
+            message: 'Server Error',
+        });
+    }
 };
 
 
@@ -139,16 +227,19 @@ exports.transactions = async (req, res) => {
 
     try {
         let dataTransactions = await transaction.findAll({
+            where:{
+                idSender: req.user.id
+            },
             include: [
                 {
-                    model: wallet,
+                    model: user,
                     as: 'receiver',
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'password']
                     },
                 },
                 {
-                    model: wallet,
+                    model: user,
                     as: 'sender',
                     attributes: {
                         exclude: ['createdAt', 'updatedAt', 'password']
@@ -157,18 +248,10 @@ exports.transactions = async (req, res) => {
             ],
         })
 
-        // console.log(data);
-        const dataSender = dataTransactions.filter((item) => item.sender.id === req.user.id)
-        const dataReceiver = dataTransactions.filter((item) => item.receiver.id === req.user.id)
-
-        let data = dataSender.concat(dataReceiver)
-        data = [...new Map(data.map(item => [item['id'], item])).values()]
-
-        data.sort((a, b) => b.createdAt - a.createdAt)
 
         res.send({
             status: 'success',
-            data
+            dataTransactions
             // dataTransactions
         })
 
