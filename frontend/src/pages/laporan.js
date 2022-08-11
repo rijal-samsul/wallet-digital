@@ -18,7 +18,7 @@ export default function Laporan() {
     const getTransacsions = async () => {
         try {
             const response = await API.get('/transactions')
-            setTransaction(response.data.dataTransactions);
+            setTransaction(response.data.data);
         } catch (error) {
             console.log(error);
         }
@@ -51,9 +51,9 @@ export default function Laporan() {
                                                 </thead>
                                                 <tbody>
                                                     {transactions?.filter((transactions) => transactions.type === 'Topup').map((item, index) => (
-                                                        <tr>
-                                                            <td key={index}>{rupiahFormat.convert(item?.nominal)}</td>
-                                                            <td>{moment(item?.createdAt).format('LL')}</td>
+                                                        <tr key={index}>
+                                                            <td>{rupiahFormat.convert(item?.nominal)}</td>
+                                                            <td>{moment(item?.createdAt).format('LLL')}</td>
                                                             <td>{item?.status}</td>
                                                         </tr>
                                                     ))}
@@ -75,7 +75,7 @@ export default function Laporan() {
                                                     <tr>
                                                         <th>Pengirim</th>
                                                         <th>Penerima</th>
-                                                        <th colspan="2">Nominal</th>
+                                                        <th>Nominal</th>
                                                         <th>Tanggal</th>
                                                         <th>Status</th>
                                                     </tr>
@@ -85,8 +85,8 @@ export default function Laporan() {
                                                         <tr key={index}>
                                                             <td>{item?.sender?.email}</td>
                                                             <td>{item?.receiver?.email}</td>
-                                                            <td colspan="2">{rupiahFormat.convert(item?.nominal)}</td>
-                                                            <td>{moment(item?.createdAt).format('LL')}</td>
+                                                            <td>{rupiahFormat.convert(item?.nominal)}</td>
+                                                            <td>{moment(item?.createdAt).format('LLL')}</td>
                                                             <td>{item?.status}</td>
                                                         </tr>
                                                     ))}
