@@ -171,8 +171,11 @@ exports.transfer = async (req, res) => {
                 idUser: req.body.receiver
             }
         })
+        
+         const biayaAdmin = '2500'
+        const total = parseInt(req.body.nominal) + parseInt(biayaAdmin)
 
-        if (sender.saldo < req.body.nominal) {
+        if (sender.saldo < total) {
             return res.status(400).send({
                 message: 'Maaf saldo anda tidak cukup!',
             });
@@ -188,8 +191,10 @@ exports.transfer = async (req, res) => {
             }
         });
 
+       
+
         const sisaSaldo = {
-            saldo: sender.saldo - req.body.nominal
+            saldo: sender.saldo - total
         }
 
         await wallet.update(sisaSaldo, {

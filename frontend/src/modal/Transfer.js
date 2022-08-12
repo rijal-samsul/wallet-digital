@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { Modal } from 'react-bootstrap'
-import {API} from '../config/api'
+import { Modal, Alert } from 'react-bootstrap'
+import { API } from '../config/api'
 import { useMutation } from 'react-query';
 import { UserContext } from '../context/userContext';
 
@@ -9,6 +9,8 @@ export default function Transfers({ transfer, closeTrans }) {
     const [form, setForm] = useState({
         nominal: ''
     })
+
+    const [message, setMessage] = useState(null);
 
     const [selected, setSelected] = useState({})
 
@@ -39,10 +41,10 @@ export default function Transfers({ transfer, closeTrans }) {
     const handleSelected = (item) => {
         setSelected(item)
     }
-    
+
     let data = {
         receiver: selected.id,
-        nominal:form.nominal
+        nominal: form.nominal
     }
 
     const handleTransfer = useMutation(async (e) => {
@@ -56,60 +58,77 @@ export default function Transfers({ transfer, closeTrans }) {
                 }
             };
             // Insert transaction data
-            const response = await API.post('/transfer',body, config);
+            const response = await API.post('/transfer', body, config);
             console.log(response);
+            if(response.status === 200){
+                const alert = (
+                    <div className='alert alert-success py-2 fw-bold' role='alert'>
+                        {response.data.message};
+                    </div>
+                )
+                setMessage(alert)
+            }
         } catch (error) {
-            console.log(error);
+            const alert = (
+                <div className='alert alert-danger py-2 fw-bold' role='alert'>
+                    {error.response.data.message};
+                </div>
+            )
+            setMessage(alert)
+            
         }
     });
 
     return (
-    <Modal
-        
-        show={transfer}
-        onHide={closeTrans}
-        aria-labelledby='contained-modal-title-vcenter'
-        centered
-    >
-        <Modal.Header closeButton /> 
-        <Modal.Body
-        className='mx-3 mb-4'
+        <Modal
+
+            show={transfer}
+            onHide={closeTrans}
+            aria-labelledby='contained-modal-title-vcenter'
+            centered
         >
-            <div className='h2 mt-2 mb-5 fw-bold d-flex justify-content-center'>Transfer Saldo</div>
-            <div>
-                <form>
-                    <div className='form-group mb-4'>
-                        <label className='fw-bold mb-2'>Pilih Akun</label>
-                        <select
-                            className='form-select'
-                            style={{background: 'rgba(210, 210, 210, 0.25)'}}
-                        >
-                            <option hidden selected>email akun</option>
-                            {wallets.map((item, index) => (
-                                <option onClick={()=> handleSelected(item)} style={{color:"white"}} key={index} >{item?.user?.email}</option>
-                            ))}
-                            {/* <option>{item.email}</option> */}
-                        </select>
-                    </div>
-                    <div className='form-group mb-3'>
-                        <label className='fw-bold mb-2'>Nominal</label>
-                        <input
-                            type='number'
-                            name='nominal'
-                            className='form-control'
-                            placeholder='jumlah transfer'
-                            value={nominal}
-                            onChange={handleChange}
-                            autoComplete='off'
-                            style={{background: 'rgba(210, 210, 210, 0.25)'}}
-                        />
-                    </div>
-                    <div className='d-grid my-5'>
-                        <button onClick={(e) => handleTransfer.mutate(e)} className='auth'>Transfer</button>
-                    </div>
-                </form>
-            </div>
-        </Modal.Body>
-    </Modal>
-  )
+            <Modal.Header closeButton />
+            <Modal.Body
+            
+                className='mx-3 mb-4'
+            >
+                <div className='h2 mt-2 mb-5 fw-bold d-flex justify-content-center'>Transfer Saldo</div>
+                <div>
+                    <form>
+                    {message && message}
+                        <div className='form-group mb-4'>
+                            <label className='fw-bold mb-2'>Pilih Akun</label>
+                            <select
+                                className='form-select'
+                                style={{ background: 'rgba(210, 210, 210, 0.25)' }}
+                            >
+                                <option hidden selected>email akun</option>
+                                {wallets.map((item, index) => (
+                                    <option onClick={() => handleSelected(item)} style={{ color: "white" }} key={index} >{item?.user?.email}</option>
+                                ))}
+                                {/* <option>{item.email}</option> */}
+                            </select>
+                        </div>
+                        <div className='form-group mb-3'>
+                            <label className='fw-bold mb-2'>Nominal</label>
+                            <input
+                                type='number'
+                                name='nominal'
+                                className='form-control'
+                                placeholder='jumlah transfer'
+                                value={nominal}
+                                onChange={handleChange}
+                                autoComplete='off'
+                                style={{ background: 'rgba(210, 210, 210, 0.25)' }}
+                            />
+                        </div>
+                        <span style={{ fontSize: "14px" }}>* Rp. 2.500 Akan dipotong sebagai biaya admin</span>
+                        <div className='d-grid my-5'>
+                            <button onClick={(e) => handleTransfer.mutate(e)} className='auth'>Transfer</button>
+                        </div>
+                    </form>
+                </div>
+            </Modal.Body>
+        </Modal>
+    )
 }
