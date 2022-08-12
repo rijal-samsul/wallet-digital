@@ -173,8 +173,11 @@ exports.transfer = async (req, res) => {
                 idUser: req.body.receiver
             }
         })
+        
+         const biayaAdmin = '2500'
+        const total = parseInt(req.body.nominal) + parseInt(biayaAdmin)
 
-        if (sender.saldo < req.body.nominal) {
+        if (sender.saldo < total) {
             return res.status(400).send({
                 message: 'Maaf saldo anda tidak cukup!',
             });
@@ -190,8 +193,10 @@ exports.transfer = async (req, res) => {
             }
         });
 
+       
+
         const sisaSaldo = {
-            saldo: sender.saldo - req.body.nominal
+            saldo: sender.saldo - total
         }
 
         await wallet.update(sisaSaldo, {
@@ -227,9 +232,6 @@ exports.transactions = async (req, res) => {
 
     try {
         let dataTransactions = await transaction.findAll({
-            where:{
-                idSender: req.user.id
-            },
             include: [
                 {
                     model: user,
@@ -248,10 +250,18 @@ exports.transactions = async (req, res) => {
             ],
         })
 
+        // console.log(data);
+        const dataSender = dataTransactions.filter((item) => item.sender.id === req.user.id)
+        const dataReceiver = dataTransactions.filter((item) => item.receiver.id === req.user.id)
+
+        let data = dataSender.concat(dataReceiver)
+        data = [...new Map(data.map(item => [item['id'], item])).values()]
+
+        data.sort((a, b) => b.createdAt - a.createdAt)
 
         res.send({
             status: 'success',
-            dataTransactions
+            data
             // dataTransactions
         })
 

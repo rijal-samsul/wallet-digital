@@ -36,7 +36,7 @@ export default function Profile() {
 
     useEffect(() => {
         getMyWallet();
-    }, []);
+    }, [myWallet]);
     
 
   return (
